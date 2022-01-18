@@ -1,28 +1,35 @@
 # Hatsunemiku2015's InventoryGUI API
-> ### This API is created by a thrid-party and has no realtion with Spigot.
+> ### This API is created by a third-party and has no relation with Spigot.
 &nbsp;
 
 This API allows the creation of InventoryGUI in spigot plugins at ease. It also support creating and wiring sub-guis that open after certain slot is clicked in main GUI. **No more spaghetti code for wiring!**
 
 ## How to import?
     1. By importing external jar
-Download the jar file from github and import into your ide.
+Download the jar file from GitHub and import into your ide.
+
+For Intellij: [add-external-jars](https://stackoverflow.com/questions/1051640/correct-way-to-add-external-jars-lib-jar-to-an-intellij-idea-project), be sure to build the artifact using "from modules with dependencies"
+
+For Eclipse: [add-external-jars-eclipse](https://stackoverflow.com/questions/3280353/how-to-import-a-jar-in-eclipse)
+
+For VS Code: [add-external-jars-vscode](https://stackoverflow.com/questions/50232557/visual-studio-code-java-extension-howto-add-jar-to-classpath)
 &nbsp;
 
-    2. Using maven
+    2. Using maven (Recommended)
 Copy this into your pom.xml:
-- Between repository tags:
+- Between repositories tags:
 ```xml
   <repository>
-    Work in progress!
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
   </repository>
 ```
-- Between dependency tags:
+- Between dependencies tags:
 ```xml
   <dependency>
-    <groupId>com.hasunemiku2015</groupId>
-    <artifactId>inventorygui</artifactId>
-    <version>0.1</version>
+    <groupId>com.github.Hasunemiku2015</groupId>
+    <artifactId>InventoryGuiAPI</artifactId>
+    <version>1.0</version>
     <scope>compile</scope>
   </dependency>
 ```
@@ -46,7 +53,7 @@ contents:
     glint: false           #Optional,  configures if the item should have a enchantment glint.
     child: ''              #Optional,  this configures the child gui of this slot.
 
-  1:                       #"Optional", this is the itemslot config.
+  1:                       #"Optional", this is the item-slot config.
     item: AIR
     name: '&0name2'
     lore:
@@ -95,21 +102,22 @@ public class MyClass {
     public class MyPlugin extends JavaPlugin {
         public static GUIRegistry registry;
 
-        public void onEnable() throws FileNotFoundException {
+        public void onEnable() {
           registry = new GUIRegistry(this);
 
           try {
-            // Remember it is .class not a object of the class
+            // Remember it is .class not an object of the class
             registry.registerExecutors(Executor.class);
             registry.registerExecutors(Executor2.class);
-          } catch (FileNotFoundException e) {
-            e.printStackTrace();
+          } catch (Exception ex) {
+            // Don't set it to ignore, so you know what happens if something goes wrong
+            ex.printStackTrace();
           }
         }
     }
 ```
 - You can open the inventory gui for a player with the following method.
-```java
+```
   registry.openGUI(player, "fileName");
 ```
 

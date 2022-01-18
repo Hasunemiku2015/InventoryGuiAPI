@@ -19,6 +19,7 @@ import java.util.Objects;
 
 class GUIFrame {
     private final String fileName;
+    private String displayName;
     private final HashMap<Integer, String> children;
     private Inventory inventory;
     private final boolean closable;
@@ -29,9 +30,7 @@ class GUIFrame {
 
         YamlConfiguration ymlFile = YamlConfiguration.loadConfiguration(
                 new InputStreamReader(Objects.requireNonNull(Container.plugin.getResource(fileName))));
-
-        inventory = Bukkit.createInventory(null, ymlFile.getInt("size") ,
-                Objects.requireNonNull(ymlFile.getString("name")));
+        inventory = createInventory(ymlFile.getString("name"), ymlFile.getInt("size"));
         closable = !ymlFile.contains("closable") || ymlFile.getBoolean("closable");
 
         ItemStack defaultItem = new ItemStack(Material.AIR, 1);
@@ -112,10 +111,16 @@ class GUIFrame {
         player.openInventory(inventory);
     }
     protected GUIFrame copy(){
-        Inventory inv = Bukkit.createInventory(null, inventory.getSize());
+        Inventory inv = createInventory(displayName, this.inventory.getSize());
         inv.setContents(inventory.getContents());
         HashMap<Integer, String> childrenCopy = new HashMap<>(children);
 
         return new GUIFrame(this.fileName, childrenCopy, inv, closable);
+    }
+
+    private Inventory createInventory(String name, int size){
+        displayName = name;
+        return name == null ? Bukkit.createInventory(null, size) : Bukkit.createInventory(null, size,
+                ChatColor.translateAlternateColorCodes('&', name));
     }
 }
