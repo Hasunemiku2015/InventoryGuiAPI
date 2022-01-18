@@ -6,7 +6,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class GUIEditor {
      * @param childName   File name of the child frame to be opened when this item is clicked,
      *                    set to null to remove, set an empty string to keep it unchanged.
      */
-    public void setItem(int slot, @NotNull Material material, String displayName, List<String> lore, boolean glint, String childName) {
+    public void setItem(int slot, Material material, String displayName, List<String> lore, boolean glint, String childName) {
         ItemStack itemStack = new ItemStack(material, 1);
         ItemMeta itm = itemStack.getItemMeta();
         assert itm != null;

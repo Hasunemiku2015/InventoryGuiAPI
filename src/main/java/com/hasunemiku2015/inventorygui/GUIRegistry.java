@@ -3,7 +3,6 @@ package com.hasunemiku2015.inventorygui;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.lang.reflect.Method;
@@ -35,7 +34,7 @@ public class GUIRegistry {
      * @throws IllegalArgumentException Thrown when the class does not contain any IGUIExecutor methods.
      * @throws FileNotFoundException    Thrown when the methods within the class reference to an unknown yml file.
      */
-    public void registerExecutors(@NotNull Class<?> clazz) throws Exception {
+    public void registerExecutors(Class<?> clazz) throws Exception {
         boolean hasAnnotation = false;
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(IGUIExecutor.class)) {

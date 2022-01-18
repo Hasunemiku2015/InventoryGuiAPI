@@ -11,16 +11,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 class GUIFrame {
     private final String fileName;
@@ -113,7 +108,7 @@ class GUIFrame {
         this.inventory = newInventory;
     }
 
-    protected void open(@NotNull Player player){
+    protected void open(Player player){
         player.openInventory(inventory);
     }
     protected GUIFrame copy(){

@@ -7,7 +7,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,7 +15,7 @@ import java.util.stream.IntStream;
 
 final class Events implements Listener {
     @EventHandler
-    private void onInventoryClose(@NotNull InventoryCloseEvent event) {
+    private void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
 
         for (GUIFrame frame : new ArrayList<>(Container.activeFrames)) {
@@ -39,13 +38,13 @@ final class Events implements Listener {
     }
 
     @EventHandler
-    private void onPlayerQuit(@NotNull PlayerQuitEvent event) {
+    private void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         Container.inheritObjects.remove(player);
     }
 
     @EventHandler
-    private void onInventoryClick(@NotNull InventoryClickEvent event) throws InvalidChildException {
+    private void onInventoryClick(InventoryClickEvent event) throws InvalidChildException {
         Player player = (Player) event.getWhoClicked();
 
         for (GUIFrame frame : new ArrayList<>(Container.activeFrames)) {
