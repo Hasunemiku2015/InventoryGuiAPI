@@ -4,7 +4,7 @@
 
 This API allows the creation of InventoryGUI in spigot plugins at ease. It also support creating and wiring sub-guis that open after certain slot is clicked in main GUI. **No more spaghetti code for wiring!**
 
-Exameple GUI:
+Example GUI:
 ![image](https://i.imgur.com/lEyteot.png)
 
 ## How to import?
