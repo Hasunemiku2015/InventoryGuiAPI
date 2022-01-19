@@ -52,7 +52,8 @@ final class Events implements Listener {
                 event.setCancelled(true);
 
                 Object returnData = null;
-                for (Class<?> cls : Container.executorClassMap.keySet()) {
+                for (Object obj : Container.executorClassInstances) {
+                    Class<?> cls = obj.getClass();
                     for (Method mth : cls.getDeclaredMethods()) {
                         if (mth.isAnnotationPresent(IGUIExecutor.class)) {
                             String name = mth.getAnnotation(IGUIExecutor.class).name();
@@ -77,12 +78,13 @@ final class Events implements Listener {
                                 inputs.add(new Object[]{event.getRawSlot()});
                                 inputs.add(new Object[]{player});
                                 inputs.add(new Object[]{Container.inheritObjects.get(player)});
-                                inputs.add(new Object[]{Container.executorClassMap.get(cls)});
+                                inputs.add(new Object[]{});
 
                                 for (Object[] input : inputs) {
                                     try {
-                                        returnData = mth.invoke(Container.executorClassMap.get(cls), input);
-                                    } catch (Exception ignored) {
+                                        returnData = mth.invoke(obj, input);
+                                    } catch (Exception ex) {
+                                        continue;
                                     }
                                     break;
                                 }

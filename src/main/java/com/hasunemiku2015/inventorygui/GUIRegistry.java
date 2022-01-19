@@ -52,7 +52,7 @@ public class GUIRegistry {
                 hasAnnotation = true;
             }
         }
-        if (hasAnnotation) Container.executorClassMap.put(clazz, clazz.getConstructor(new Class[0]).newInstance());
+        if (hasAnnotation) Container.executorClassInstances.add(clazz.getConstructor(new Class[0]).newInstance());
         else
             throw new IllegalArgumentException("The class registered does not contain a IGUIExecutor annotated method!");
     }
