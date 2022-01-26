@@ -24,7 +24,7 @@ public class GUIRegistry {
             Bukkit.getServer().getPluginManager().registerEvents(new Events(), Container.plugin);
 
             isEnabled = true;
-        } else throw new IllegalArgumentException("GUIRegistry is already instantiated!");
+        }
     }
 
     /**
