@@ -59,7 +59,9 @@ final class Events implements Listener {
                             String name = mth.getAnnotation(IGUIExecutor.class).name();
                             int[] slots = mth.getAnnotation(IGUIExecutor.class).slots();
 
-                            if (frame.getFileName().equalsIgnoreCase(name) && IntStream.of(slots).anyMatch(x -> x == event.getRawSlot())) {
+                            if(!name.endsWith(".yml")) name = name.concat(".yml");
+                            if (frame.getFileName().equalsIgnoreCase(name)
+                                    && IntStream.of(slots).anyMatch(x -> x == event.getRawSlot())) {
                                 List<Object[]> inputs = new ArrayList<>();
                                 inputs.add(new Object[]{event.getRawSlot(), player, Container.inheritObjects.get(player)});
                                 inputs.add(new Object[]{player, event.getRawSlot(), Container.inheritObjects.get(player)});
