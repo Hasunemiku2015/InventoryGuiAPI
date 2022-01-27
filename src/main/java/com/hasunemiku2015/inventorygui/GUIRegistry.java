@@ -19,10 +19,9 @@ public class GUIRegistry {
      * @throws IllegalArgumentException Error thrown when a GUIRegistry Object is already instantiated.
      */
     public GUIRegistry(Plugin plugin) throws IllegalArgumentException {
+        Container.plugin = plugin;
         if (!isEnabled) {
-            Container.plugin = plugin;
             Bukkit.getServer().getPluginManager().registerEvents(new Events(), Container.plugin);
-
             isEnabled = true;
         }
     }
