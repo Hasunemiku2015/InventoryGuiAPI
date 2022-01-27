@@ -11,6 +11,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 import java.io.InputStreamReader;
 import java.util.HashMap;
@@ -24,12 +25,12 @@ class GUIFrame {
     private Inventory inventory;
     private final boolean closable;
 
-    protected GUIFrame(String fileName) throws NullPointerException {
+    protected GUIFrame(Plugin resourcePlugin, String fileName) throws NullPointerException {
         this.fileName = fileName;
         this.children = new HashMap<>();
 
         YamlConfiguration ymlFile = YamlConfiguration.loadConfiguration(
-                new InputStreamReader(Objects.requireNonNull(Container.plugin.getResource(fileName))));
+                new InputStreamReader(Objects.requireNonNull(resourcePlugin.getResource(fileName))));
         inventory = createInventory(ymlFile.getString("name"), ymlFile.getInt("size"));
         closable = !ymlFile.contains("closable") || ymlFile.getBoolean("closable");
 

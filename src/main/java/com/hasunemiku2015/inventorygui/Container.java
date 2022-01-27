@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 
 final class Container {
-    static Plugin plugin;
+    static Plugin eventPlugin;
     static final List<GUIFrame> activeFrames = new ArrayList<>();
     static final List<Object> executorClassInstances = new ArrayList<>();
     static final HashMap<String, GUIFrame> guiFrameMap = new HashMap<>();

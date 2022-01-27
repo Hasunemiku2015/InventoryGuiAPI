@@ -10,18 +10,20 @@ import java.util.function.Consumer;
 
 public class GUIRegistry {
     private static boolean isEnabled = false;
+    protected Plugin resourcePlugin;
 
     /**
      * Creates a new GUIRegistry Object, this object registers IGUIExecutor classes and opens Inventory GUI for players.
      * GUIRegistry objects should be singletons.
      *
-     * @param plugin The instance of your "main plugin class".
+     * @param resourcePlugin The instance of your "main plugin class".
      * @throws IllegalArgumentException Error thrown when a GUIRegistry Object is already instantiated.
      */
     public GUIRegistry(Plugin plugin) throws IllegalArgumentException {
-        Container.plugin = plugin;
+        resourcePlugin = plugin;
         if (!isEnabled) {
-            Bukkit.getServer().getPluginManager().registerEvents(new Events(), Container.plugin);
+            Container.eventPlugin = plugin;
+            Bukkit.getServer().getPluginManager().registerEvents(new Events(), Container.eventPlugin);
             isEnabled = true;
         }
     }
@@ -42,10 +44,10 @@ public class GUIRegistry {
                 if (!Container.guiFrameMap.containsKey(name)) {
                     String fileName = name.endsWith(".yml") ? name : name.concat(".yml");
 
-                    if (Container.plugin.getResource(fileName) == null) {
+                    if (resourcePlugin.getResource(fileName) == null) {
                         throw new FileNotFoundException("Cannot find yml file " + fileName + ".yml in resources directory!");
                     } else {
-                        Container.guiFrameMap.put(fileName, new GUIFrame(fileName));
+                        Container.guiFrameMap.put(fileName, new GUIFrame(resourcePlugin, fileName));
                     }
                 }
                 hasAnnotation = true;
