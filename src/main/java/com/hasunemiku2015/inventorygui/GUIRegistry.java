@@ -16,7 +16,7 @@ public class GUIRegistry {
      * Creates a new GUIRegistry Object, this object registers IGUIExecutor classes and opens Inventory GUI for players.
      * GUIRegistry objects should be singletons.
      *
-     * @param resourcePlugin The instance of your "main plugin class".
+     * @param plugin The instance of your "main plugin class".
      * @throws IllegalArgumentException Error thrown when a GUIRegistry Object is already instantiated.
      */
     public GUIRegistry(Plugin plugin) throws IllegalArgumentException {
