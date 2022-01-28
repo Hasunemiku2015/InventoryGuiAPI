@@ -69,8 +69,6 @@ public class GUIRegistry {
         String name = fileName.endsWith(".yml") ? fileName : fileName.concat(".yml");
         GUIFrame frame = Container.guiFrameMap.get(fileName).copy();
 
-        System.out.println(Container.guiFrameMap.keySet());
-
         Container.activeFrames.add(frame);
         frame.open(player);
         return frame;
