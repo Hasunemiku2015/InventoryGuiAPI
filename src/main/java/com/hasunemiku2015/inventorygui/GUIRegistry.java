@@ -66,8 +66,8 @@ public class GUIRegistry {
      * @return A GUIFrame object, expected to be used in a constructing GUIEditor and nothing else.
      */
     public GUIFrame openGUI(Player player, String fileName) {
-        String name = fileName.endsWith(".yml") ? fileName : fileName.concat(".yml");
-        GUIFrame frame = Container.guiFrameMap.get(name).copy();
+//        String name = fileName.endsWith(".yml") ? fileName : fileName.concat(".yml");
+        GUIFrame frame = Container.guiFrameMap.get(fileName).copy();
         Container.activeFrames.add(frame);
         frame.open(player);
         return frame;
