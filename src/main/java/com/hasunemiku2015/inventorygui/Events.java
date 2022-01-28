@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 final class Events implements Listener {
@@ -23,7 +24,10 @@ final class Events implements Listener {
                 if (!frame.isClosable()) {
                     frame.open(player);
                 } else {
-                    Container.inheritObjects.remove(player);
+                    List<String> frameNames = Container.activeFrames.stream().map(GUIFrame::getFileName)
+                                    .collect(Collectors.toList());
+                    if(frameNames.stream().anyMatch(var0 -> frame.getChildren().containsValue(var0)))
+                        Container.inheritObjects.remove(player);
                     Container.activeFrames.remove(frame);
                 }
             }
@@ -100,9 +104,11 @@ final class Events implements Listener {
 
                     if (childFrameTemplate == null) {
                         throw new InvalidChildException("The specified child GUI does not exist!");
-                    } else if (returnData instanceof Object[]) {
-                        Container.inheritObjects.put(player, (Object[]) returnData);
+                    } else{
+                        if (returnData instanceof Object[]) Container.inheritObjects.put(player, (Object[]) returnData);
+
                         GUIFrame childFrame = childFrameTemplate.copy();
+                        player.closeInventory();
                         player.openInventory(childFrame.getInventory());
                         Container.activeFrames.add(childFrame);
                     }

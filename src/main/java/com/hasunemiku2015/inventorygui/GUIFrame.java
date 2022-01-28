@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 class GUIFrame {
     private final String fileName;
@@ -46,9 +47,9 @@ class GUIFrame {
             Material item = Material.valueOf(itemStackConfiguration.getString("item"));
             String name = itemStackConfiguration.getString("name") != null ? ChatColor.translateAlternateColorCodes
                     ('&', Objects.requireNonNull(itemStackConfiguration.getString("name"))): null;
-            List<String> lore = itemStackConfiguration.getStringList("lore");
-            boolean glint = itemStackConfiguration.getString("glint") != null && itemStackConfiguration.
-                    getBoolean("glint");
+            List<String> lore = itemStackConfiguration.getStringList("lore").stream().map
+                    (str -> ChatColor.translateAlternateColorCodes('&', str)).collect(Collectors.toList());
+            boolean glint = itemStackConfiguration.getBoolean("glint");
             String ymlChild = itemStackConfiguration.getString("child");
             String child = ymlChild == null ? null : ymlChild.endsWith(".yml") ? ymlChild : ymlChild.concat(".yml");
 
@@ -58,7 +59,7 @@ class GUIFrame {
             meta.setDisplayName(name);
             if(!lore.isEmpty()) meta.setLore(lore);
             if(glint){
-                itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+                meta.addEnchant(Enchantment.DURABILITY, 1, true);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
             itemStack.setItemMeta(meta);
