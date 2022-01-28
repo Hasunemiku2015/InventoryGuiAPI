@@ -45,7 +45,7 @@ public class GUIRegistry {
                     String fileName = name.endsWith(".yml") ? name : name.concat(".yml");
 
                     if (resourcePlugin.getResource(fileName) == null) {
-                        throw new FileNotFoundException("Cannot find yml file " + fileName + ".yml in resources directory!");
+                        throw new FileNotFoundException("Cannot find yml file " + fileName + "in resources directory!");
                     } else {
                         Container.guiFrameMap.put(fileName, new GUIFrame(resourcePlugin, fileName));
                     }

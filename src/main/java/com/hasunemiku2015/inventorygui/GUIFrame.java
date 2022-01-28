@@ -49,7 +49,8 @@ class GUIFrame {
             List<String> lore = itemStackConfiguration.getStringList("lore");
             boolean glint = itemStackConfiguration.getString("glint") != null && itemStackConfiguration.
                     getBoolean("glint");
-            String child = itemStackConfiguration.getString("child");
+            String ymlChild = itemStackConfiguration.getString("child");
+            String child = ymlChild == null ? null : ymlChild.endsWith(".yml") ? ymlChild : ymlChild.concat(".yml");
 
             ItemStack itemStack = new ItemStack(item , 1);
             ItemMeta meta = itemStack.getItemMeta();
