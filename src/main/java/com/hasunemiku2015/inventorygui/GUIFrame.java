@@ -59,7 +59,7 @@ class GUIFrame {
             meta.setDisplayName(name);
             if(!lore.isEmpty()) meta.setLore(lore);
             if(glint){
-                meta.addEnchant(Enchantment.DURABILITY, 1, true);
+                meta.addUnsafeEnchantment(Enchantment.DURABILITY, 1, true);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
             itemStack.setItemMeta(meta);
