@@ -3,9 +3,7 @@ package com.hasunemiku2015.inventorygui;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.*;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.lang.reflect.Method;
@@ -25,8 +23,8 @@ final class Events implements Listener {
                     frame.open(player);
                 } else {
                     List<String> frameNames = Container.activeFrames.stream().map(GUIFrame::getFileName)
-                                    .collect(Collectors.toList());
-                    if(frameNames.stream().anyMatch(var0 -> frame.getChildren().containsValue(var0)))
+                            .collect(Collectors.toList());
+                    if (frameNames.stream().anyMatch(var0 -> frame.getChildren().containsValue(var0)))
                         Container.inheritObjects.remove(player);
                     Container.activeFrames.remove(frame);
                 }
@@ -36,8 +34,19 @@ final class Events implements Listener {
 
     @EventHandler
     private void onInventoryDrag(InventoryDragEvent event) {
-        for (GUIFrame frame : Container.guiFrameMap.values()) {
+        for (GUIFrame frame: Container.guiFrameMap.values()) {
             if (event.getInventory().equals(frame.getInventory())) event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    private void onInventoryMoveItem(InventoryMoveItemEvent event) {
+        for (GUIFrame frame: Container.guiFrameMap.values()) {
+            if (event.getSource().equals(frame.getInventory())) {
+                if (event.getDestination().getType() == InventoryType.PLAYER) {
+                    event.setCancelled(true);
+                }
+            }
         }
     }
 
@@ -63,7 +72,7 @@ final class Events implements Listener {
                             String name = mth.getAnnotation(IGUIExecutor.class).name();
                             int[] slots = mth.getAnnotation(IGUIExecutor.class).slots();
 
-                            if(!name.endsWith(".yml")) name = name.concat(".yml");
+                            if (!name.endsWith(".yml")) name = name.concat(".yml");
                             if (frame.getFileName().equalsIgnoreCase(name)
                                     && IntStream.of(slots).anyMatch(x -> x == event.getRawSlot())) {
                                 List<Object[]> inputs = new ArrayList<>();
@@ -104,7 +113,7 @@ final class Events implements Listener {
 
                     if (childFrameTemplate == null) {
                         throw new InvalidChildException("The specified child GUI does not exist!");
-                    } else{
+                    } else {
                         if (returnData instanceof Object[]) Container.inheritObjects.put(player, (Object[]) returnData);
 
                         GUIFrame childFrame = childFrameTemplate.copy();
