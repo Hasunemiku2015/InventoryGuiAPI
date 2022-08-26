@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GUIEditor {
     private final GUIFrame defaultFrame;
@@ -34,7 +35,11 @@ public class GUIEditor {
         ItemMeta itm = itemStack.getItemMeta();
         assert itm != null;
         itm.setDisplayName(ChatColor.translateAlternateColorCodes('&', displayName));
-        itm.setLore(lore);
+        if (lore != null) {
+            if (!lore.isEmpty()) {
+                itm.setLore(lore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList()));
+            }
+        }
         if (glint) {
             itemStack.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
             itm.addItemFlags(ItemFlag.HIDE_ENCHANTS);

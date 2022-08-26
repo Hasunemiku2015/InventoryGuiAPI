@@ -40,51 +40,55 @@ class GUIFrame {
 
         ConfigurationSection contents = ymlFile.getConfigurationSection("contents");
         if (contents == null) throw new NullPointerException("Cannot find contents of inventory GUI!");
-        for(String key : contents.getKeys(false)){
+        for (String key : contents.getKeys(false)) {
             ConfigurationSection itemStackConfiguration = contents.getConfigurationSection(key);
 
             assert itemStackConfiguration != null;
             Material item = Material.valueOf(itemStackConfiguration.getString("item"));
             String name = itemStackConfiguration.getString("name") != null ? ChatColor.translateAlternateColorCodes
-                    ('&', Objects.requireNonNull(itemStackConfiguration.getString("name"))): null;
+                    ('&', Objects.requireNonNull(itemStackConfiguration.getString("name"))) : null;
             List<String> lore = itemStackConfiguration.getStringList("lore").stream().map
                     (str -> ChatColor.translateAlternateColorCodes('&', str)).collect(Collectors.toList());
             boolean glint = itemStackConfiguration.getBoolean("glint");
             String ymlChild = itemStackConfiguration.getString("child");
             String child = ymlChild == null ? null : ymlChild.endsWith(".yml") ? ymlChild : ymlChild.concat(".yml");
 
-            ItemStack itemStack = new ItemStack(item , 1);
+            ItemStack itemStack = new ItemStack(item, 1);
+            if (glint) {
+                itemStack.addUnsafeEnchantment(Enchantment.LURE, 1);
+            }
             ItemMeta meta = itemStack.getItemMeta();
             assert meta != null;
             meta.setDisplayName(name);
-            if(!lore.isEmpty()) meta.setLore(lore);
-            if(glint){
-                meta.addEnchant(Enchantment.DURABILITY, 1, true);
+            if (!lore.isEmpty())
+                meta.setLore(lore.stream().map(s -> ChatColor.translateAlternateColorCodes('&', s)).collect(Collectors.toList()));
+            if (glint) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
             itemStack.setItemMeta(meta);
 
-            if(key.equalsIgnoreCase("default")){
+            if (key.equalsIgnoreCase("default")) {
                 defaultItem = itemStack;
                 defaultChild = child;
             } else {
                 int slot = Integer.parseInt(key);
                 inventory.setItem(slot, itemStack);
-                if(child != null)
+                if (child != null)
                     children.put(slot, child);
             }
         }
 
-        for(int i=0;i<inventory.getSize();i++){
-            if(inventory.getItem(i) == null){
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (inventory.getItem(i) == null) {
                 inventory.setItem(i, defaultItem);
-                if(defaultChild != null){
+                if (defaultChild != null) {
                     children.put(i, defaultChild);
                 }
             }
         }
     }
-    private GUIFrame(String fileName, HashMap<Integer, String> children, Inventory inventory, boolean closable){
+
+    private GUIFrame(String fileName, HashMap<Integer, String> children, Inventory inventory, boolean closable) {
         this.fileName = fileName;
         this.children = children;
         this.inventory = inventory;
@@ -94,26 +98,30 @@ class GUIFrame {
     protected Inventory getInventory() {
         return inventory;
     }
+
     protected String getFileName() {
         return fileName;
     }
-    protected boolean isClosable(){
+
+    protected boolean isClosable() {
         return closable;
     }
+
     protected HashMap<Integer, String> getChildren() {
         return children;
     }
 
-    protected void setTitle(String title){
+    protected void setTitle(String title) {
         Inventory newInventory = Bukkit.createInventory(null, 9, title);
         newInventory.setContents(inventory.getContents());
         this.inventory = newInventory;
     }
 
-    protected void open(Player player){
+    protected void open(Player player) {
         player.openInventory(inventory);
     }
-    protected GUIFrame copy(){
+
+    protected GUIFrame copy() {
         Inventory inv = createInventory(displayName, this.inventory.getSize());
         inv.setContents(inventory.getContents());
         HashMap<Integer, String> childrenCopy = new HashMap<>(children);
@@ -121,7 +129,7 @@ class GUIFrame {
         return new GUIFrame(this.fileName, childrenCopy, inv, closable);
     }
 
-    private Inventory createInventory(String name, int size){
+    private Inventory createInventory(String name, int size) {
         displayName = name;
         return name == null ? Bukkit.createInventory(null, size) : Bukkit.createInventory(null, size,
                 ChatColor.translateAlternateColorCodes('&', name));
