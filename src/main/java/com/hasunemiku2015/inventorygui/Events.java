@@ -1,5 +1,6 @@
 package com.hasunemiku2015.inventorygui;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +17,7 @@ final class Events implements Listener {
     @EventHandler
     private void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
+        Bukkit.getScheduler().runTaskLater(Container.eventPlugin, player::updateInventory, 1);
 
         for (GUIFrame frame : new ArrayList<>(Container.activeFrames)) {
             if (event.getInventory().equals(frame.getInventory())) {
